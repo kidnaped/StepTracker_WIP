@@ -1,20 +1,13 @@
-import java.util.Scanner;
-
 public class StepTracker {
-    Scanner sc;
     Converter converter;
     MonthData[] monthDate;
-    int stepGoals;
     int defaultStepGoals;
 
-
-    StepTracker(Scanner sc) {
+    StepTracker() {
         converter = new Converter();
         monthDate = new MonthData[12];
-        this.sc = sc;
 
         defaultStepGoals = 10000;
-        stepGoals = defaultStepGoals;
 
         for (int m = 0; m < monthDate.length; m++) {
             monthDate[m] = new MonthData();
@@ -24,6 +17,7 @@ public class StepTracker {
     void printUserStats(int month) {
         int stepsTotal = 0;
         int maxSteps = 0;
+
 
         System.out.println("Статистика пользователя за " + month + " месяц:");
         System.out.println("Пройденные шаги:");
@@ -42,28 +36,15 @@ public class StepTracker {
         System.out.println("Среднее количество шагов: " + stepsTotal/monthDate[month -1].data.length);
         System.out.println("Пройденная дистанция: " + converter.distance(stepsTotal) + " километров.");
         System.out.println("Количество сожженных килокалорий: " + converter.calories(stepsTotal));
-        System.out.println("Лучшая серия: " + getBestSeries(monthDate, month, stepGoals) + " дней.");
+        System.out.println("Лучшая серия: " + getBestSeries(monthDate[month - 1], defaultStepGoals) + " дней.");
 
     }
 
-    void setStepGoals() {
-            System.out.println("Введите новую цель по количеству шагов.");
-            stepGoals = sc.nextInt();
-           if (stepGoals < 0) {
-               stepGoals = defaultStepGoals; // возвращаем дефолтное значение целей
-               System.out.println("Введите положительное число!");
-               stepGoals = sc.nextInt();
-           } else {
-               defaultStepGoals = stepGoals; // задаем новый дефолт целей для отката
-               System.out.println("Новая цель по количеству шагов: " + stepGoals);
-           }
-    }
-
-    int getBestSeries(MonthData[] monthDate, int month, int stepGoals) {
+    int getBestSeries(MonthData monthDate, int stepGoals) {
         int seriesMax = 0;
         int seriesCurrent = 0;
-        for (int d = 0; d < monthDate[month - 1].data.length; d++) {
-            if (monthDate[month - 1].data[d] >= stepGoals) {
+        for (int d = 0; d < monthDate.data.length; d++) {
+            if (monthDate.data[d] >= stepGoals) {
                 seriesCurrent++;
                 if (seriesMax < seriesCurrent) {
                     seriesMax = seriesCurrent;
@@ -73,6 +54,9 @@ public class StepTracker {
             }
         }
         return seriesMax;
+    }
+    void setStepGoals(int stepGoals) {
+        defaultStepGoals = stepGoals;
     }
 
     class MonthData {
