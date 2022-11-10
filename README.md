@@ -1,2 +1,2 @@
-# java-sprint1-hw
-First sprint homework
+# StepTracker app
+First sprint homework on Yandex.Practicum
